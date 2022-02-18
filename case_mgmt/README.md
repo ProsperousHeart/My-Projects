@@ -9,4 +9,4 @@ Since it was code I wrote at the time for Cisco, I cannot simply copy/paste the 
 
 So instead, I am going to recreate what I can from memory!
 
-It will do many of the same things, but what kind of data and how it is accessed/modified will likely change.
+Please review the [docs](/docs) to see what this code currently does & how information is utilized.
