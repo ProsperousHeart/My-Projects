@@ -1,3 +1,8 @@
+# Folders In Project
+My Code/
+
+# DEFAULT ITEMS FOR PYTHON GITIGNORE BELOW
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
