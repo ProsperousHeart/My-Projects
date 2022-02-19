@@ -6,6 +6,9 @@ __status__ = "WIP"
 
 # from classes import Flag, Case_Obj, Engineer
 from temp_data import engr_ids as engrs
+from temp_data import case_db as db_client
+# from temp_data import case_status as status_list
+from utilities import get_case_data, get_engr_data
 
 import logging
 logger = logging.getLogger(__name__)
@@ -57,3 +60,9 @@ if __name__ == "__main__":
         print(engr_list[0])
     else:
         print("ERROR! Multiple engineers")
+
+    logger.debug('Attempting to call get_engr_data()...')
+    engr_case_data = get_case_data(db_client, engr_id)
+    if len(engr_case_data) == 0:
+        print("There are no cases ")
+    print(engr_case_data)
