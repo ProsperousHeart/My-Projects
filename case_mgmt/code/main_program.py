@@ -7,6 +7,7 @@ __status__ = "WIP"
 # from classes import Flag, Case_Obj, Engineer
 from temp_data import engr_ids as engrs
 from temp_data import case_db as db_client
+from temp_data import case_status
 # from temp_data import case_status as status_list
 from utilities import get_case_data, get_engr_data
 
@@ -14,16 +15,8 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+status_dict = {str(num): item for num, item in enumerate(case_status)}
 
-def locate_Engr(chk_id: str = None, exact:bool = False):
-    """
-    This function checks to see if an engineer's ID is in the system.
-    If it is, returns ID. Otherwise returns None.
-    """
-
-    if exact:
-        return [item for item in engrs if chk_id == item['id']]
-    return [item for item in engrs if chk_id in item['id']]
 
 def req_Info():
     """
@@ -43,6 +36,29 @@ def req_Info():
                 return (engr_id, True)
             return (engr_id, False)
 
+def locate_Engr(chk_id: str = None, exact:bool = False):
+    """
+    This function checks to see if an engineer's ID is in the system.
+    If it is, returns ID. Otherwise returns None.
+    """
+
+    if exact:
+        return [item for item in engrs if chk_id == item['id']]
+    return [item for item in engrs if chk_id in item['id']]
+
+def det_status():
+    """
+    This function inquires the status of cases they are looking for.
+    Returns the requested status.
+    """
+
+    while True:
+        ask_status = input(f"Which status would you like to pull cases for?\n{status_dict}\t")
+        if ask_status not in status_dict.keys():
+            print("Please choose a number related to a case status.")
+        else:
+            return status_dict[ask_status]
+
 # This section wil allow python file to be run from command line
 if __name__ == "__main__":
     """
@@ -50,7 +66,16 @@ if __name__ == "__main__":
     
     """
 
+    # ==============================================================
+    # request from user:
+    #     - the ID of the engineer they are looking for
+    #     - if they are looking for an exact match or partial number
+    # ==============================================================
     engr_id, exact_bool = req_Info()
+
+    # ==============================================================
+    # confirm if engineer exists
+    # ==============================================================
     engr_list = locate_Engr(engr_id, exact_bool)
     del exact_bool
 
@@ -59,10 +84,16 @@ if __name__ == "__main__":
     elif len(engr_list) == 1:
         print(engr_list[0])
     else:
+        # this should never happen - database should have unique engineer numbers
         print("ERROR! Multiple engineers")
 
+    # ==============================================================
+    # pull case data for engineer as per user request
+    # ==============================================================
     logger.debug('Attempting to call get_engr_data()...')
-    engr_case_data = get_case_data(db_client, engr_id)
+    status_id = det_status()
+    engr_case_data = get_case_data(db_client, engr_id, status_id)
     if len(engr_case_data) == 0:
-        print("There are no cases ")
-    print(engr_case_data)
+        print(f"There are no cases for engineer ID {engr_id} with '{status_id}' status.")
+    else:
+        print(engr_case_data)
