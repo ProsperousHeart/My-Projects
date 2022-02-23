@@ -22,6 +22,8 @@
 # ================================================
 
 # from loguru import logger
+
+# https://docs.python.org/3/library/itertools.html#itertools.combinations
 from itertools import combinations
 
 def division(num1: int, num2: int):
