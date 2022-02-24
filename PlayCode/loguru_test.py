@@ -21,7 +21,7 @@
 #       @logger.catch
 # ================================================
 
-# from loguru import logger
+from loguru import logger
 
 # https://docs.python.org/3/library/itertools.html#itertools.combinations
 from itertools import combinations
@@ -29,7 +29,7 @@ from itertools import combinations
 def division(num1: int, num2: int):
     return num1/num2
 
-# @logger.catch
+@logger.catch
 def divide_numbers(num_list: list):
     """Division of 2 numbers in the number list """
 
