@@ -25,7 +25,12 @@ def req_Info():
     2nd element is if the ID needs to be exact.
 
     """
-    engr_id = input("What engineer ID are you looking for?\t")
+    while True:
+        engr_id = input("What engineer ID are you looking for?\t")
+        if engr_id =="":
+            print("Please provide a valid engineer ID.")
+        else:
+            break
 
     while True:
         exact_match = input("Does this need to be exact? 1 - Yes, 2 - No\t")
@@ -83,17 +88,18 @@ if __name__ == "__main__":
         print("No engineers found.")
     elif len(engr_list) == 1:
         print(engr_list[0])
+
+        # ==============================================================
+        # pull case data for engineer as per user request
+        # ==============================================================
+        logger.debug('Attempting to call get_engr_data()...')
+        status_id = det_status()
+        engr_case_data = get_case_data(db_client, engr_id, status_id)
+        if len(engr_case_data) == 0:
+            print(f"There are no cases for engineer ID {engr_id} with '{status_id}' status.")
+        else:
+            print(engr_case_data)
+
     else:
         # this should never happen - database should have unique engineer numbers
         print("ERROR! Multiple engineers")
-
-    # ==============================================================
-    # pull case data for engineer as per user request
-    # ==============================================================
-    logger.debug('Attempting to call get_engr_data()...')
-    status_id = det_status()
-    engr_case_data = get_case_data(db_client, engr_id, status_id)
-    if len(engr_case_data) == 0:
-        print(f"There are no cases for engineer ID {engr_id} with '{status_id}' status.")
-    else:
-        print(engr_case_data)
