@@ -10,6 +10,8 @@ from temp_data import case_db as db_client
 from temp_data import case_status
 # from temp_data import case_status as status_list
 from utilities import get_case_data, get_engr_data
+# import snoop
+# from loguru import logger as loguru_logger
 
 import logging
 logger = logging.getLogger(__name__)
@@ -51,6 +53,7 @@ def locate_Engr(chk_id: str = None, exact:bool = False):
         return [item for item in engrs if chk_id == item['id']]
     return [item for item in engrs if chk_id in item['id']]
 
+# @snoop
 def det_status():
     """
     This function inquires the status of cases they are looking for.
@@ -63,6 +66,24 @@ def det_status():
             print("Please choose a number related to a case status.")
         else:
             return status_dict[ask_status]
+
+# @loguru_logger.catch
+# @snoop
+def process_data(engr_dict:dict, status_val):
+    """
+
+    """
+    print(engr_dict)
+
+    # ==============================================================
+    # pull case data for engineer as per user request
+    # ==============================================================
+    logger.debug('Attempting to call get_engr_data()...')
+    engr_case_data = get_case_data(db_client, engr_dict['id'], status_val)
+    if len(engr_case_data) == 0:
+        print(f"There are no cases for engineer ID {engr_dict['id']} with '{status_val}' status.")
+    else:
+        print(engr_case_data)
 
 # This section wil allow python file to be run from command line
 if __name__ == "__main__":
@@ -83,23 +104,12 @@ if __name__ == "__main__":
     # ==============================================================
     engr_list = locate_Engr(engr_id, exact_bool)
     del exact_bool
+    del engr_id
 
     if len(engr_list) == 0:
         print("No engineers found.")
     elif len(engr_list) == 1:
-        print(engr_list[0])
-
-        # ==============================================================
-        # pull case data for engineer as per user request
-        # ==============================================================
-        logger.debug('Attempting to call get_engr_data()...')
-        status_id = det_status()
-        engr_case_data = get_case_data(db_client, engr_id, status_id)
-        if len(engr_case_data) == 0:
-            print(f"There are no cases for engineer ID {engr_id} with '{status_id}' status.")
-        else:
-            print(engr_case_data)
-
+        process_data(engr_list[0], det_status())
     else:
         # this should never happen - database should have unique engineer numbers
         print("ERROR! Multiple engineers")
