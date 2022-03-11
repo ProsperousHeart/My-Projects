@@ -1,6 +1,11 @@
 # Folders In Project
 My Code/
 
+# Files
+.idea/
+case_mgmt/code/utilities_temp.py
+case_mgmt/code/classes_old.py
+
 # DEFAULT ITEMS FOR PYTHON GITIGNORE BELOW
 
 # Byte-compiled / optimized / DLL files
