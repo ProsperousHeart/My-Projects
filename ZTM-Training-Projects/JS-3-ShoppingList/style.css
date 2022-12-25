@@ -1,0 +1,24 @@
+body,input,button{
+  font-family: 'Montserrat', sans-serif;
+}
+.container{
+    /*display: flex;
+    flex-flow: col nowrap;*/
+    text-align:center;
+}
+
+.done-txt {
+    text-decoration: line-through;
+    color: red;
+}
+
+.item {
+    display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 5px;
+}
+
+i:hover {
+    cursor: pointer;
+}
